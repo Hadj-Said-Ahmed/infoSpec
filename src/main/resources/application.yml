@@ -3,8 +3,9 @@ server:
   port: 8089
   servlet:
     context-path: /acv
-topic:
-  name: Info_specific_consumer
+kafka:
+  producer:
+    bootstrap-servers: localhost:9092
 #management:
 #  health:
 #    livenessState.enabled: true

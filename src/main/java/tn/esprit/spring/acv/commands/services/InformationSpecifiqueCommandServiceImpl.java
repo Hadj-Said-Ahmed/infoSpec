@@ -12,6 +12,7 @@ import tn.esprit.spring.acv.entities.entitiesCommands.InformationSpecifiqueComma
 @Service
 @AllArgsConstructor
 public class InformationSpecifiqueCommandServiceImpl implements IInformationSpecifiqueCommandService{
+    private static final String TOPIC = "test_topic";
     private KafkaTemplate<Long, String> kafkaTemplate;
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private InformationSpecifiqueCommandRepository repository;
@@ -19,7 +20,7 @@ public class InformationSpecifiqueCommandServiceImpl implements IInformationSpec
     public InformationSpecifiqueCommand ajouterInfo(InformationSpecifiqueDto dto) {
         InformationSpecifiqueCommand info = repository.save(InformationSpecifiqueCommandMapper.dtoToModel(dto));
         try{
-            this.eventQuerryUnite(info, "info_specific_event_add");
+            this.eventQuerryUnite(info, TOPIC);
 
     }catch (Exception e){
         e.getMessage();

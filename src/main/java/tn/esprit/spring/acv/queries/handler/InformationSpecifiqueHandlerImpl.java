@@ -20,7 +20,7 @@ public class InformationSpecifiqueHandlerImpl implements IInformationSpecifiqueH
         return repository.save(InformationSpecifiqueQueryMapper.dtoToModel(dto));
     }
 
-    @KafkaListener(topics = "info_specific_event_add", groupId = "Info_specific_consumer")
+    @KafkaListener(topics = "test_topic",groupId = "group_id")
     public void consumer_add_info_specific(String result){
         try {
             InformationSpecifiqueDto informationSpecifiqueDto = OBJECT_MAPPER.readValue(result, InformationSpecifiqueDto.class);
