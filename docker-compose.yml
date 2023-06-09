@@ -11,8 +11,7 @@ services:
     volumes:
       - ./pub-technology/zookeeper/data:/data
       - ./pub-technology/zookeeper/datalog:/datalog
-
-  kafkaserver:
+  kafka-server-1:
     image: confluentinc/cp-kafka:latest
     depends_on:
       - zookeeper
@@ -27,9 +26,10 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     volumes:
       - ./pub-technology/kafka1/data:/var/lib/kafka/data
-  mongodbgreen:
+
+  mongodb:
     image: mongo:6.0.1
-    container_name: "mongodbgreen"
+    container_name: "mongodb"
     ports:
       - 27070:27017
     volumes:
@@ -49,7 +49,10 @@ services:
       retries: 5
     volumes:
       - db:/var/lib/greentech
-  app:
+  manager:
+    image: sheepkiller/kafka-manager
+
+
 
     build:
       context: "./"
@@ -57,17 +60,20 @@ services:
     restart: on-failure
     env_file: ./.env
     ports:
-      - 8093:8093
+      - 8089:8089
     depends_on:
-      - mongodbgreen
+      - mongodb
+      - kafka-server-1
       - postgreSQL
-      - kafkaserver
+
     environment:
+
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgreSQL:5432/postgres
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=admin
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+
     volumes:
       - .m2:/root/.m2
     stdin_open: true
