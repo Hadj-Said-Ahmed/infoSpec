@@ -62,7 +62,10 @@ services:
     volumes:
       - db:/var/lib/greentech
   app:
-
+    depends_on:
+      - kafka
+      - mongodb
+      - postgreSQL
     build:
       context: "./"
       dockerfile: "Dockerfile"
@@ -70,12 +73,8 @@ services:
     env_file: ./.env
     ports:
       - 8089:8089
-    depends_on:
-      - kafka
-      - mongodb
-      - postgreSQL
+
     environment:
-      - ALLOW_PLAINTEXT_LISTENER=yes
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgreSQL:5432/postgres
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=admin
