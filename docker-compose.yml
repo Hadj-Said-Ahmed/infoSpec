@@ -59,18 +59,16 @@ services:
     ports:
       - 8089:8089
     depends_on:
-      - mongodb
+      - zookeeper
       - kafka-server-1
+      - mongodb
       - postgreSQL
-
     environment:
-
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgreSQL:5432/postgres
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=admin
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
-
     volumes:
       - .m2:/root/.m2
     stdin_open: true
